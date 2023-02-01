@@ -8,14 +8,23 @@ import {
   printError
 } from "./services/log.service.js";
 import {
-  saveKeyValue
+  saveKeyValue,
+  TOKEN_DICTIONARY
 } from "./services/storage.service.js";
+import {
+  getWeather
+} from "./services/api.service.js";
 
 const saveToken = async (token) => {
+  if (!token.length) {
+    printError('Не передан токен')
+    return
+  }
+
   try {
-    await saveKeyValue('token', token)
+    await saveKeyValue(TOKEN_DICTIONARY.token, token)
     printSuccess('Токен сохранен')
-  }catch (e) {
+  } catch (e) {
     printError(e.message)
   }
 }
@@ -33,6 +42,7 @@ const initCLI = () => {
     return saveToken(args.t);
   }
 
+   getWeather('astana')
   // Вывести погоду
 }
 
